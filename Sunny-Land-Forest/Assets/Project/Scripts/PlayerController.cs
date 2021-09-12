@@ -17,6 +17,12 @@ public class PlayerController : MonoBehaviour
 
     public bool facingRight = true;
 
+    //Pulo
+    public bool jump;
+    public int numberJumps = 0;
+    public int maxJumps = 2;
+    public float jumpForce;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +33,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        touchRun = Input.GetAxisRaw("Horizontal");
+        isGround = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+        playerAnimator.SetBool("IsGrounded", isGround);
+
+
+       touchRun = Input.GetAxisRaw("Horizontal");
         Debug.Log(touchRun.ToString());
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            jump = true;
+        }
 
         SetaAnimator();
     }
@@ -36,6 +51,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer(touchRun);
+
+        if (jump)
+        {
+            JumpPlayer();
+        }
     }
 
     void MovePlayer(float movimentoH)
@@ -57,9 +77,27 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
+    void JumpPlayer()
+    {
+        if (isGround)
+        {
+            numberJumps = 0;
+        }
+
+            if (isGround || numberJumps < maxJumps)
+        {
+            playerRigidBody.AddForce(new Vector2(0f, jumpForce));
+            isGround = false;
+            numberJumps++;
+        }
+
+        jump = false;
+    }
+
     void SetaAnimator()
     {
-        playerAnimator.SetBool("Walk", playerRigidBody.velocity.x != 0);
+        playerAnimator.SetBool("Walk", playerRigidBody.velocity.x != 0 && isGround);
+        playerAnimator.SetBool("Jump", !isGround);
     }
 }
 

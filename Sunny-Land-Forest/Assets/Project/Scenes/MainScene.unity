@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 382966749}
   - component: {fileID: 382966748}
   - component: {fileID: 382966747}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tilemap Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2284,9 +2284,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundCheck: {fileID: 385436578}
   isGround: 0
-  speed: 8
+  speed: 6
   touchRun: 0
   facingRight: 1
+  jump: 0
+  numberJumps: 0
+  maxJumps: 2
+  jumpForce: 300
 --- !u!1 &928882297
 GameObject:
   m_ObjectHideFlags: 0
