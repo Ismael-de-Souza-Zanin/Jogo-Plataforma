@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
     public int maxJumps = 2;
     public float jumpForce;
 
+    public AudioSource fxGame;
+    public AudioClip fxPulo;
+
 
     private ControllerGame _ControleGame;
     // Start is called before the first frame update
@@ -92,6 +95,7 @@ public class PlayerController : MonoBehaviour
         {
             playerRigidBody.AddForce(new Vector2(0f, jumpForce));
             isGround = false;
+            fxGame.PlayOneShot(fxPulo);
             numberJumps++;
         }
 
