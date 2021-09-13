@@ -23,11 +23,15 @@ public class PlayerController : MonoBehaviour
     public int maxJumps = 2;
     public float jumpForce;
 
+
+    private ControllerGame _ControleGame;
     // Start is called before the first frame update
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
         playerRigidBody = GetComponent<Rigidbody2D>();
+
+        _ControleGame = FindObjectOfType(typeof(ControllerGame)) as ControllerGame;
     }
 
     // Update is called once per frame
@@ -98,6 +102,18 @@ public class PlayerController : MonoBehaviour
     {
         playerAnimator.SetBool("Walk", playerRigidBody.velocity.x != 0 && isGround);
         playerAnimator.SetBool("Jump", !isGround);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Coletaveis":
+                _ControleGame.Pontuacao(1);
+                Destroy(collision.gameObject);
+                break;
+        }
+
     }
 }
 
